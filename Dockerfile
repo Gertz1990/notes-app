@@ -1,20 +1,17 @@
 # Стадия 1: Сборка React-приложения
 FROM node:18 AS frontend-builder
 
+# Устанавливаем рабочую директорию
 WORKDIR /app/frontend
-COPY package.json package-lock.json ./
+
+# Копируем package.json и package-lock.json
+COPY frontend/package.json frontend/package-lock.json ./
+
+# Устанавливаем зависимости
 RUN npm install
-COPY . .
+
+# Копируем исходный код
+COPY frontend/ .
+
+# Собираем React-приложение
 RUN npm run build
-
-# Стадия 2: Сервер
-FROM node:18
-
-WORKDIR /app/backend
-COPY package.json package-lock.json ./
-RUN npm install
-COPY . .
-COPY --from=frontend-builder /app/frontend/build ./frontend/build
-
-EXPOSE 3000 3001
-CMD npm run server & serve -s frontend/build -l 3000
