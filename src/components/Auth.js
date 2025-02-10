@@ -1,29 +1,64 @@
 // src/components/Auth.js
 import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Auth = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!email || !password) {
-      alert("Введите email и пароль");
+      toast.error("Введите email и пароль");
       return;
     }
 
-    // Имитация регистрации
-    localStorage.setItem("user", JSON.stringify({ email }));
-    setUser({ email });
-    alert("Регистрация успешна!");
+    try {
+      // Проверяем, существует ли пользователь
+      const response = await axios.get("http://localhost:3001/users");
+      const users = response.data;
+
+      const userExists = users.some((user) => user.email === email);
+      if (userExists) {
+        toast.error("Пользователь уже зарегистрирован");
+        return;
+      }
+
+      // Сохраняем пользователя
+      await axios.post("http://localhost:3001/users", { email, password });
+
+      // Устанавливаем пользователя и сохраняем в localStorage
+      setUser({ email });
+      localStorage.setItem("user", JSON.stringify({ email }));
+      toast.success("Регистрация успешна!");
+    } catch (error) {
+      toast.error("Ошибка регистрации: " + error.message);
+    }
   };
 
-  const handleLogin = () => {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (savedUser && savedUser.email === email) {
-      setUser(savedUser);
-      alert("Вход выполнен!");
-    } else {
-      alert("Неверный email или пароль");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      toast.error("Введите email и пароль");
+      return;
+    }
+
+    try {
+      // Проверяем учетные данные
+      const response = await axios.get("http://localhost:3001/users");
+      const users = response.data;
+
+      const user = users.find((u) => u.email === email && u.password === password);
+      if (!user) {
+        toast.error("Неверный email или пароль");
+        return;
+      }
+
+      // Устанавливаем пользователя и сохраняем в localStorage
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success("Вход выполнен!");
+    } catch (error) {
+      toast.error("Ошибка входа: " + error.message);
     }
   };
 
@@ -66,6 +101,7 @@ const Auth = ({ setUser }) => {
           border: "none",
           borderRadius: "8px",
           cursor: "pointer",
+          marginBottom: "10px",
         }}
       >
         Зарегистрироваться
@@ -75,12 +111,11 @@ const Auth = ({ setUser }) => {
         style={{
           width: "100%",
           padding: "10px",
-          backgroundColor: "#007aff",
+          backgroundColor: "#333",
           color: "white",
           border: "none",
           borderRadius: "8px",
           cursor: "pointer",
-          marginTop: "10px",
         }}
       >
         Войти

@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "email": "ercov@yandex.ru",
+      "password": "347891",
+      "id": 1
+    }
+  ],
+  "notes": [],
+  "files": [
+    {
+      "name": "Снимок экрана 2024-12-03 154338.png",
+      "url": "http://localhost:3001/uploads/Ð¡Ð½Ð¸Ð¼Ð¾Ðº ÑÐºÑÐ°Ð½Ð° 2024-12-03 154338.png",
+      "id": 1
+    },
+    {
+      "name": "photo_2025-02-09_18-58-30.jpg",
+      "url": "http://localhost:3001/uploads/photo_2025-02-09_18-58-30.jpg",
+      "id": 2
+    },
+    {
+      "name": "Снимок экрана 2025-01-21 162323.png",
+      "url": "http://localhost:3001/uploads/Ð¡Ð½Ð¸Ð¼Ð¾Ðº ÑÐºÑÐ°Ð½Ð° 2025-01-21 162323.png",
+      "id": 3
+    }
+  ]
+}
