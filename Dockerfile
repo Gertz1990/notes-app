@@ -1,5 +1,5 @@
 # Стадия 1: Сборка React-приложения
-FROM node:18 AS frontend-builder
+FROM node:20 AS frontend-builder
 
 # Устанавливаем рабочую директорию
 WORKDIR /app/frontend
