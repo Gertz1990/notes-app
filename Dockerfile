@@ -23,4 +23,6 @@ COPY --from=frontend-builder /app/frontend/build ./frontend/build
 COPY --from=backend-builder /app/backend ./
 
 EXPOSE 3000 3001
-CMD ["npm", "run", "server"] && ["serve", "-s", "frontend/build", "-l", "3000"]
+
+# Используем JSON array form для CMD
+CMD ["sh", "-c", "npm run server & serve -s frontend/build -l 3000"]
