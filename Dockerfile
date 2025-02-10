@@ -17,7 +17,7 @@ COPY frontend/ .
 RUN npm run build
 
 # Стадия 2: Сборка сервера
-FROM node:18 AS backend-builder
+FROM node:20 AS backend-builder
 
 # Устанавливаем рабочую директорию
 WORKDIR /app/backend
@@ -32,7 +32,7 @@ RUN npm install
 COPY backend/ .
 
 # Стадия 3: Финальный образ
-FROM node:18
+FROM node:20
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
